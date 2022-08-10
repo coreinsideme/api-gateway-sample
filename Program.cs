@@ -1,7 +1,7 @@
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Cache.CacheManager;
-
+using ApiGateway.Middlewares;
 using ApiGateway.Aggregators;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +18,8 @@ builder.Services.AddOcelot()
     .AddSingletonDefinedAggregator<ProductAggregator>();
 
 var app = builder.Build();
+
+app.UseMiddleware<CorrelationIdMiddleware>();
 
 app.Map("/swagger.json", b =>
 {
